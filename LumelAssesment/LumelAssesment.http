@@ -1,0 +1,6 @@
+@LumelAssesment_HostAddress = http://localhost:5091
+
+GET {{LumelAssesment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
