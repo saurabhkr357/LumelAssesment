@@ -1,0 +1,71 @@
+CREATE DATABASE SalesDB;
+GO
+
+USE SalesDB;
+GO
+
+-- Customers
+CREATE TABLE Customers (
+    CustomerID NVARCHAR(50) PRIMARY KEY,
+    Name NVARCHAR(100),
+    Email NVARCHAR(100),
+    Address NVARCHAR(255)
+);
+GO
+
+-- Categories
+CREATE TABLE Categories (
+    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) UNIQUE
+);
+GO
+
+-- Products
+CREATE TABLE Products (
+    ProductID NVARCHAR(50) PRIMARY KEY,
+    Name NVARCHAR(100),
+    UnitPrice DECIMAL(18,2),
+    CategoryID INT,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+GO
+
+-- Regions
+CREATE TABLE Regions (
+    RegionID INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) UNIQUE
+);
+GO
+
+-- Payment Methods
+CREATE TABLE PaymentMethods (
+    PaymentMethodID INT IDENTITY(1,1) PRIMARY KEY,
+    MethodName NVARCHAR(100) UNIQUE
+);
+GO
+
+-- Orders
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID NVARCHAR(50),
+    DateOfSale DATE,
+    RegionID INT,
+    PaymentMethodID INT,
+    ShippingCost DECIMAL(18,2),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (RegionID) REFERENCES Regions(RegionID),
+    FOREIGN KEY (PaymentMethodID) REFERENCES PaymentMethods(PaymentMethodID)
+);
+GO
+
+-- Order Details
+CREATE TABLE OrderDetails (
+    OrderDetailID INT IDENTITY(1,1) PRIMARY KEY,
+    OrderID INT,
+    ProductID NVARCHAR(50),
+    QuantitySold INT,
+    Discount DECIMAL(4,2),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+GO
